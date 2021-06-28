@@ -1,0 +1,16 @@
+{
+  "name": "crypto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "crypto": "./index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "inquirer": "^6.2.1"
+  }
+}
