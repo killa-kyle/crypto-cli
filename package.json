@@ -6,11 +6,18 @@
   "bin": {
     "crypto": "./index.js"
   },
+  "scripts": {
+    "dev": "nodemon index.js && npm install-global",
+    "install-global": "npm install -g ./"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
-    "inquirer": "^6.2.1"
+    "colors": "^1.4.0",
+    "commander": "^8.0.0",
+    "inquirer": "^6.5.2",
+    "nodemon": "^2.0.7"
   }
 }
