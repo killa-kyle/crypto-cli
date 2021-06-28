@@ -7,7 +7,7 @@
     "crypto": "./index.js"
   },
   "scripts": {
-    "dev": "nodemon index.js && npm install-global",
+    "dev": "nodemon index.js --delay 1 && npm install-global",
     "install-global": "npm install -g ./"
   },
   "keywords": [],

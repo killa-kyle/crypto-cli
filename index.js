@@ -2,10 +2,9 @@
 
 const axios = require("axios");
 const inquirer = require("inquirer");
-
 const program = require("commander");
-
-async function run() {
+program.version("0.0.1");
+async function getCryptoPrices() {
   console.log(
     `%c
   ________________________.___._____________________________   
@@ -17,27 +16,30 @@ async function run() {
     `font-family: monospace`
   ); // generated https://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
 
-  const { from, to } = await askQuestions();
+  // get values from user for conversion
+  // https://github.com/SBoudrias/Inquirer.js/#documentation
+  const { from, to } = await promptUser();
 
-  const value = await calculateValue({ from, to });
-  let values = ``;
+  // make request
+  const value = await fetchPrices({ from, to });
+
   // convert object to key's array
   const keys = Object.keys(value);
 
-  // print all keys
-  // console.log(keys);
+  // store returned values as string
+  let values = ``;
 
   // iterate over object
   keys.forEach((key, index) => {
-    // console.log(`${key}: ${value[key]}`);
-    values += `\n${key} ${value[key]}`;
+    values += ` ${value[key]} ${key} | `;
   });
 
-  console.log(`${from} is worth:
-              ${values} at ${createTimestamp()}`);
+  // return our conversion
+  console.log(`
+  ${from} is worth: ${values} at ${createTimestamp()}`);
 }
 
-function askQuestions() {
+function promptUser() {
   const questions = [
     {
       name: "from",
@@ -71,7 +73,7 @@ function askQuestions() {
   return inquirer.prompt(questions);
 }
 
-async function calculateValue({ from = "ETH", to = "USD" }) {
+async function fetchPrices({ from = "ETH", to = "USD" }) {
   const { data } = await axios.get(
     `https://min-api.cryptocompare.com/data/price?fsym=${from}&tsyms=${to}`
   );
@@ -111,13 +113,14 @@ function createTimestamp() {
   return `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 }
 
+// kick off our cli program
+// https://github.com/tj/commander.js
+
 program
-  // .command("crypto") // sub-command name
-  .alias("stonks") // alternative sub-command is `stonks`
-  .description("Get current crypto prices") // command description
-  // function to execute when command is uses
-  .action(function () {
-    run();
+  .alias("stonks")
+  .description("Get current crypto prices") // command
+  .action(async function () {
+    await getCryptoPrices();
   });
 
 // allow commander to parse `process.argv`
